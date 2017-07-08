@@ -1,0 +1,32 @@
+<template>
+  <div id="app">
+    <!-- <img src="./assets/logo.png"> -->
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  height:100%;
+}
+::-webkit-scrollbar{
+  width:0px;
+  height:0px;
+}
+::-webkit-scrollbar-thumb{
+  width:0px;
+  height:0px;
+  border-radius: 4px;
+  border:0 solid #fff;
+}
+</style>
