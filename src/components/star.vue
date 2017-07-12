@@ -18,13 +18,17 @@ export default {
   },
   data () {
     return {
-      star: 1,
-      star_has: 1
+      star: 1
     }
   },
   created () {
     this.star = this.star_list
-    this.star_has = this.star_active
+    // this.star_has = this.star_active
+  },
+  computed: {
+    star_has () {
+      return this.star_active
+    }
   }
 }
 </script>

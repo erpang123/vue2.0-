@@ -62,13 +62,13 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var fs=require("fs");
-var bodyParser=require("body-parser");
-var router=express.Router();
-var data_json;
+var fs=require("fs")
+var bodyParser=require("body-parser")
+var data_json
+var router=express.Router()
 fs.readFile("goods.json","utf-8",function(error,data){
-  if(error) console.log(error);
-  data_json=data;
+  if(error) console.log(error)
+  data_json=data
 });
 
 router.get('/seller', (req, res) => {
@@ -79,9 +79,11 @@ router.get('/message', (req, res) => {
   res.json(data_json)
 })
 
+router.get('/goods', (req, res) => {
+  res.json(data_json)
+})
+
 app.use('/api', router)
-
-
 
 var uri = 'http://localhost:' + port
 

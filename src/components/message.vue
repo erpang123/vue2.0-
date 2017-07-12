@@ -25,9 +25,9 @@
     </div>
     <div class="admin-info-view">
       <ul class="admin-info-banner">
-        <li @click="select_index=index" :class="{'li-active': select_index == index}" v-for="(list,index) in li_list">{{list.li_name}}<small>{{list.li_math}}</small></li>
+        <li @click="get_rating(index)" :class="{'li-active': select_index == index}" v-for="(list,index) in li_list">{{list.li_name}}<small>{{list.li_math}}</small></li>
       </ul>
-      <p class="admin-info-title" :class="{'success-active': select_p}" @click="select_p=!select_p">只看有内容的评价</p>
+      <p class="admin-info-title" :class="{'success-active': select_p}" @click="get_info">只看有内容的评价</p>
       <message-info></message-info>
     </div>
   </div>
@@ -36,6 +36,7 @@
 <script>
 import star from './star.vue'
 import messageInfo from './messageInfo.vue'
+import bus from '../bus.js'
 
 export default {
   data () {
@@ -63,6 +64,16 @@ export default {
   components: {
     star: star,
     'message-info': messageInfo
+  },
+  methods: {
+    get_rating (index) {
+      this.select_index = index
+      bus.$emit('reload', this.select_index, this.select_p)
+    },
+    get_info () {
+      this.select_p = !this.select_p
+      bus.$emit('reload', this.select_index, this.select_p)
+    }
   }
 }
 </script>

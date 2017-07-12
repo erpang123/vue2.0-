@@ -5,9 +5,9 @@
         <div>
           <h6>{{shop_info.name}}</h6>
           <div class="merchants-title-star">
-            <star :star_list='shop_info.star_list' :star_active='shop_info.star_active'></star>
-            <label>({{shop_info.score_math}})</label>
-            <span>月售{{shop_info.good_math}}单</span>
+            <star :star_list='5' :star_active='4'></star>
+            <label>({{shop_info.sellCount}})</label>
+            <span>月售{{shop_info.sellCount}}单</span>
           </div>
         </div>
         <div class="collect" :class="{'has-collect': collect}" @click="collect=!collect">收藏</div>
@@ -15,33 +15,33 @@
       <div class="merchants-title2">
         <div>
           <p>起送价</p>
-          <p>{{shop_info.q_money}}<a>元</a></p>
+          <p>{{shop_info.minPrice}}<a>元</a></p>
         </div>
         <div>
           <p>商家配送</p>
-          <p>{{shop_info.start_money}}<a>元</a></p>
+          <p>{{shop_info.deliveryPrice}}<a>元</a></p>
         </div>
         <div>
           <p>平均配送时间</p>
-          <p>{{shop_info.pj_time}}<a>分钟</a></p>
+          <p>{{shop_info.deliveryTime}}<a>分钟</a></p>
         </div>
       </div>
     </div>
     <div class="merchants-content">
       <h6>公告与活动</h6>
-      <div class="merchants-content-info">{{ann_info.main_info}}</div>
-      <div class="com-info-class" :class="{'com-info-img1': list.title==1,'com-info-img2': list.title==2,'com-info-img3': list.title==3,'com-info-img4': list.title==4,'com-info-img5': list.title==5}" v-for="list in ann_info.active_text">{{list.text}}</div>
+      <div class="merchants-content-info">{{shop_info.bulletin}}</div>
+      <div class="com-info-class" :class="{'com-info-img1': list.type==0,'com-info-img2': list.type==1,'com-info-img3': list.type==2,'com-info-img4': list.type==3,'com-info-img5': list.type==4}" v-for="list in shop_info.supports">{{list.description}}</div>
     </div>
     <div class="goods-imglist">
       <h6>商家实景</h6>
       <div>
-        <img v-for="img in imgs" :src="img" />
+        <img v-for="img in shop_info.pics" :src="img" />
       </div>
     </div>
     <div class="shops-info">
       <h6>商家信息</h6>
       <div>
-        <p v-for="info in mer_info">{{info}}</p>
+        <p v-for="info in shop_info.infos">{{info}}</p>
       </div>
     </div>
   </div>
@@ -55,54 +55,22 @@ export default {
     return {
       imgs: ['', '', '', ''],
       collect: false,
-      shop_info: {
-        name: '粥品香坊（大运村）',
-        star_list: 5,
-        star_active: 4,
-        score_math: 661,
-        good_math: 690,
-        q_money: 20,
-        start_money: 4,
-        pj_time: 39
-      },
-      ann_info: {
-        main_info: '粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深的',
-        active_text: [
-          {
-            title: 1,
-            text: '在线支付满28减5，满50减10'
-          },
-          {
-            title: 2,
-            text: '单人精彩赛'
-          },
-          {
-            title: 2,
-            text: '清肺雪梨汤8折抢购'
-          },
-          {
-            title: 3,
-            text: '特价饮品八折抢购'
-          },
-          {
-            title: 3,
-            text: '单人特色套餐'
-          },
-          {
-            title: 4,
-            text: '该商家支持开发票，请在下单时填写好发票抬头'
-          },
-          {
-            title: 5,
-            text: '已加入“外卖保”计划，食品安全保障'
-          }
-        ]
-      },
-      mer_info: ['该商家支持开发票，请在下单时填写好发票抬头', '品类：其他菜系、包子粥店', '地址：北京市昌平区回龙观西大街龙观置业大厦底商B座102 单元1340', '营业时间：10:00 - 20:30']
+      shop_info: {}
     }
   },
   components: {
     star: star
+  },
+  created () {
+    this.$http({
+      url: '/api/goods',
+      method: 'get'
+    }).then((data) => {
+      var goodslist = JSON.parse(data.body).seller
+      this.shop_info = goodslist
+    }, (error) => {
+      console.log(error)
+    })
   }
 }
 </script>
