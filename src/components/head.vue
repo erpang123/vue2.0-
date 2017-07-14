@@ -3,21 +3,23 @@
     <div class="flex-box">
       <img src="../assets/shop_img.png">
       <div class="bannel-info">
-        <h5>{{goodinfo.name}}</h5>
+        <h5 @click='get_shop'>{{goodinfo.name}}</h5>
         <p>{{goodinfo.description}} / {{goodinfo.deliveryTime}}分钟送达</p>
         <p class="p-text1" v-if="index === 0" v-for="(good,index) in goodinfo.supports">{{good.description}}</p>
         <div class="bannel-next">
-          <label>5个</label>
+          <label @click='get_shop'>5个</label>
         </div>
       </div>
     </div>
-    <div class="gg-info">
+    <div class="gg-info" @click='get_shop'>
       <p><label ref="alertinfo" style="margin-left:0;">{{goodinfo.bulletin}}</label></p>
     </div>
   </div>
 </template>
 
 <script>
+import bus from '../bus.js'
+
 export default {
   data () {
     return {
@@ -51,6 +53,11 @@ export default {
       }
       slideText()
       this.first = 0
+    }
+  },
+  methods: {
+    get_shop () {
+      bus.$emit('blurshop')
     }
   }
 }

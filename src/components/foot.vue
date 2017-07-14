@@ -26,6 +26,7 @@ export default {
   },
   mounted () {
     bus.$off('test')
+    bus.$off('cleartest')
     bus.$on('test', (a) => {
       if (a.tag) {
         this.all_num++
@@ -41,12 +42,18 @@ export default {
         this.price -= parseFloat(a.price)
       }
     })
+    bus.$on('cleartest', () => {
+      this.price = 0
+      this.all_num = 0
+    })
   },
   methods: {
     shop_cart () {
-      bus.$emit('shopCart', 1)
-      bus.$emit('blur')
-      bus.$emit('setcart', true)
+      if (this.all_num > 0) {
+        bus.$emit('shopCart', 1)
+        bus.$emit('blur')
+        bus.$emit('setcart', true)
+      }
     }
   }
 }

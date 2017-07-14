@@ -1,8 +1,16 @@
 <template>
 	<div class="shop-cart" v-if='cart_boolean'>
+    <div class="shop-cart-alert" v-if="cart_bool">
+      <h6>是否要清空购物车</h6>
+      <p>
+        <a @click="cart_bool = false">取消</a>
+        <i></i>
+        <a @click="clear_info">确定</a>
+      </p>
+    </div>
 		<h5>
 			<label>购物车</label>
-			<a>清空</a>
+			<a @click="cart_bool = true">清空</a>
 		</h5>
     <div class="no-shop" v-if="goods.length===0">还未点餐</div>
 		<ul v-if="goods.length>0">
@@ -25,13 +33,16 @@ export default {
   data () {
     return {
       goods: [],
-      cart_boolean: false
+      cart_boolean: false,
+      cart_bool: false
     }
   },
   components: {
     'seller-list': sellerlist
   },
   mounted () {
+    bus.$off('shopCart')
+    bus.$off('shopInfo')
     bus.$on('shopCart', (a) => {
       if (a === 1) {
         this.cart_boolean = true
@@ -53,11 +64,74 @@ export default {
       }
       this.goods.push(obj)
     })
+  },
+  methods: {
+    clear_info () {
+      this.cart_bool = false
+      this.cart_boolean = false
+      bus.$emit('offblur')
+      bus.$emit('setcart', false)
+      bus.$emit('cleartest')
+      bus.$emit('clearcart')
+      this.goods = []
+    }
   }
 }
 </script>
 
 <style>
+.shop-cart-alert{
+  position: fixed;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding:20px 0 0;
+  min-width: 200px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  overflow:hidden;
+  background: #fff;
+  z-index: 112;
+}
+.shop-cart-alert h6{
+  font-size: 14px;
+  color:#333;
+  text-align: center;
+  position: relative;
+  padding:0 16px 20px; 
+}
+.shop-cart-alert h6:after{
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background:#e6e6e6;
+  transform: scaleY(0.5);
+}
+.shop-cart-alert p{
+  display: flex;
+  align-items: center;
+}
+.shop-cart-alert p a{
+  display: block;
+  font-size: 12px;
+  color:#333;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 0;
+  flex-grow: 1;
+}
+.shop-cart-alert p i{
+  width: 1px;
+  height: 30px;
+  background:#e6e6e6;
+  transform: scaleX(0.5);
+  flex-flow: 0;
+  flex-shrink: 0;
+}
 .shop-cart{
   position: fixed;
   left: 0;

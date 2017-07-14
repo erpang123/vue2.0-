@@ -3,9 +3,9 @@
     <transition name='grid' @before-enter="beforeEnter" @after-enter="afterEnter">
       <a v-if="show" class="math-cube"></a>
     </transition>
-    <span v-if="math != 0" class="code-btn" @click="code_math"></span>
+    <span v-if="math != 0" class="code-btn" @click.stop="code_math"></span>
     <label :data-value="new_math">{{math}}</label>
-    <span class="add-btn" ref='add_btn' @click="add_math"></span>
+    <span class="add-btn" ref='add_btn' @click.stop="add_math"></span>
   </div>
 </template>
 
@@ -42,8 +42,19 @@ export default {
     this.price = this.food_price
     this.name = this.food_name
     bus.$off('setcart')
+    bus.$off('clearcart')
+    bus.$off('startinfo')
     bus.$on('setcart', (a) => {
       window.shopcartview = a
+    })
+    bus.$on('clearcart', () => {
+      for (let i in _this) {
+        _this[i].obj.math = 0
+      }
+      _this = []
+    })
+    bus.$on('startinfo', (obj) => {
+      this.startinfo(obj)
     })
   },
   computed: {
@@ -54,6 +65,9 @@ export default {
     }
   },
   methods: {
+    startinfo (obj) {
+
+    },
     code_math () {
       this.math--
       if (window.shopcartview) {
@@ -70,6 +84,8 @@ export default {
         math: this.math
       }
       bus.$emit('shopInfo', info)
+      bus.$emit('detailmath', info)
+      bus.$emit('detailgood', info)
       var obj = {
         tag: 0,
         price: this.price
@@ -87,11 +103,25 @@ export default {
           }
         }
       } else {
-        var tab = {
-          obj: this,
-          name: this.name
+        if (_this.length > 0) {
+          for (let i in _this) {
+            if (_this[i].name === this.name) {
+              _this[i].obj = this
+            } else {
+              let tab = {
+                obj: this,
+                name: this.name
+              }
+              _this.push(tab)
+            }
+          }
+        } else {
+          let tab = {
+            obj: this,
+            name: this.name
+          }
+          _this.push(tab)
         }
-        _this.push(tab)
       }
       var price = this.price
       var obj = {
@@ -105,6 +135,8 @@ export default {
       }
       bus.$emit('test', obj)
       bus.$emit('shopInfo', info)
+      bus.$emit('detailmath', info)
+      bus.$emit('detailgood', info)
     },
     beforeEnter (el) {
       var x = event.clientX
@@ -192,17 +224,18 @@ export default {
   transform-origin: center;
 }
 .math-cube{
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  z-index: 99;
-  border-radius: 50%;
-  background: #f00;
+  position: fixed !important;
+  width: 10px !important;
+  height: 10px !important;
+  z-index: 99 !important;
+  padding:0 !important;
+  border-radius: 50% !important;
+  background: #f00 !important;
   transition: top 0.2s cubic-bezier(.42,-0.44,.44,.13),
-              left 0.2s linear;
+              left 0.2s linear !important;
   -webkit-transition: top 0.2s cubic-bezier(.42,-0.44,.44,.13),
-                      left 0.2s linear;
+                      left 0.2s linear !important;
   -moz-transition: top 0.2s cubic-bezier(.42,-0.44,.44,.13),
-                   left 0.2s linear;
+                   left 0.2s linear !important;
 }
 </style>
