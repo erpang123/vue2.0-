@@ -22,7 +22,7 @@
             <div class="price">
               <a>￥{{food.price}}</a>
               <a style="text-decoration: line-through;" v-if="food.oldPrice != ''">￥{{food.oldPrice}}</a>
-              <seller-list :food_name="food.name" :food_price="food.price" :food_math = 'food_math'></seller-list>
+              <seller-list ref="sellerlist" :food_name="food.name" :food_price="food.price" :food_math = 'food_math'></seller-list>
             </div>
           </div>
         </div>
@@ -39,7 +39,8 @@
 <script>
 import sellerlist from './SellerList.vue'
 import detailinfo from './detail-info.vue'
-import bus from '../bus.js'
+
+window._this = []
 
 export default {
   data () {
@@ -63,10 +64,10 @@ export default {
     }, (error) => {
       console.log(error)
     })
-    bus.$off('detailmath')
-    bus.$on('detailmath', (obj) => {
-      this.detail_math(obj)
-    })
+    // bus.$off('detailmath')
+    // bus.$on('detailmath', (obj) => {
+    //   this.detail_math(obj)
+    // })
   },
   updated () {
     var index = this.items.length
@@ -76,6 +77,7 @@ export default {
       keys.push(this.$refs[j][0].offsetTop)
     }
     this.keys = keys
+    window._this = this.$refs.sellerlist
   },
   components: {
     'seller-list': sellerlist,
@@ -107,154 +109,29 @@ export default {
     detail_info (obj) {
       this.detail_bool = true
       this.good_info = obj
-      for (let i in this.foodList) {
-        if (this.foodList[i].name === obj.name) {
-          this.good_math = this.foodList[i].math
+      let _this = window._this
+      for (let i in _this) {
+        if (_this[i].name === obj.name) {
+          this.good_math = _this[i].math
           return
         }
       }
       this.good_math = 0
-    },
-    detail_math (obj) {
-      if (this.foodList.length > 0) {
-        for (let i in this.foodList) {
-          if (this.foodList[i].name === obj.name) {
-            this.foodList[i].math = obj.math
-          } else {
-            this.foodList.push(obj)
-          }
-        }
-      } else {
-        this.foodList.push(obj)
-      }
     }
+    // ,
+    // detail_math (obj) {
+    //   if (this.foodList.length > 0) {
+    //     for (let i in this.foodList) {
+    //       if (this.foodList[i].name === obj.name) {
+    //         this.foodList[i].math = obj.math
+    //       } else {
+    //         this.foodList.push(obj)
+    //       }
+    //     }
+    //   } else {
+    //     this.foodList.push(obj)
+    //   }
+    // }
   }
 }
 </script>
-
-<style>
-.page-content{
-  display: flex;
-  height: calc(100% - 224px);
-  height: -webkit-calc(100% - 224px);
-}
-.right-show{
-  flex-grow:1;
-  height: 100%;
-  position: relative;
-  overflow-y:auto;
-  overflow-scrolling:touch;
-  -webkit-overflow-scrolling:touch;
-}
-.left-nav{
-  width: 80px;
-  box-sizing: border-box;
-  background:#F4F5F7;
-  height: 100%;
-  overflow-y:auto;
-  overflow-scrolling:touch;
-  -webkit-overflow-scrolling:touch;
-}
-.left-nav div{
-  height:54px;
-  padding:0 12px;
-  box-sizing: border-box;
-  font-size: 12px;
-  color:#333;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-.left-nav div:after{
-  content: '';
-  position: absolute;
-  height: 1px;
-  left: 12px;
-  right: 12px;
-  background:#E6E7E9;
-  transform: scaleY(0.5);
-  bottom:0;
-}
-.left-nav div.p-active{
-  background:#fff;
-  color:#000;
-}
-.left-nav p img{
-  width:12px;
-}
-.info-title{
-  padding-left:16px;
-  border-left: 2px solid #D9DDE1;
-  background: #F3F5F7;
-  font-size: 12px;
-  color:#93999F;
-  text-align: left;
-  height: 27px;
-  line-height: 27px;
-}
-.info-lists{
-  display: flex;
-  align-items: center;
-  padding:18px 0;
-  position: relative;
-}
-.info-lists:not(:last-child):after{
-  content: '';
-  position: absolute;
-  height: 1px;
-  left: 18px;
-  right: 18px;
-  background:#E6E7E9;
-  transform: scaleY(0.5);
-  transform-origin: 0 0;
-  bottom:0;
-}
-.info-lists>div{
-  text-align: left;
-  flex-grow:1;
-}
-.info-lists img{
-  width: 36px;
-  height: 36px;
-  margin-left: 18px;
-  margin-right:10px;
-}
-.food-name{
-  font-size: 14px;
-  color: rgb(7,17,27);
-  line-height: 28px;
-  margin-bottom:8px;
-  font-weight: normal;
-}
-.rating{
-  font-size: 10px;
-  color:rgb(147,153,159);
-  line-height: 10px;
-}
-.rating label:nth-of-type(1){
-  margin-right:12px;
-}
-.price{
-  margin-top:5px;
-  position: relative;
-}
-.price a{
-  vertical-align: text-top;
-}
-.price a:nth-of-type(1){
-  font-size:14px;
-  color:#F21415;
-  font-weight: bold;
-  line-height: 24px;
-  margin-right:8px;
-}
-.price a:nth-of-type(2){
-  font-size: 10px;
-  color:rgb(147,153,159);
-  font-weight: bold;
-  line-height: 24px;
-}
-.price .set-math{
-  right:20px;
-}
-</style>

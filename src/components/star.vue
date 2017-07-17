@@ -32,24 +32,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .star-lists{
-    overflow:hidden;
-  }
-  .star-lists a{
-    float: left;
-    width: 15px;
-    height: 15px;
-    background:url(../assets/star36_off.png) center no-repeat;
-    background-size:contain;
-    margin-right:5px;
-  }
-  .star-lists a:last-child{
-    margin-right:0;
-  }
-  .star-lists a.star-active{
-    background:url(../assets/star36_on.png) center no-repeat;
-    background-size:contain;
-  }
-</style>

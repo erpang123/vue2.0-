@@ -11,7 +11,7 @@
 
 <script>
 import bus from '../bus.js'
-var _this = []
+
 window.shopcartview = false // 是否是购物车界面的加减
 
 export default {
@@ -48,8 +48,9 @@ export default {
       window.shopcartview = a
     })
     bus.$on('clearcart', () => {
+      let _this = window._this
       for (let i in _this) {
-        _this[i].obj.math = 0
+        _this[i].math = 0
       }
       _this = []
     })
@@ -66,14 +67,22 @@ export default {
   },
   methods: {
     startinfo (obj) {
-
+      console.log(1)
+      let _this = window._this
+      for (var i in _this) {
+        if (_this[i].name === obj.name) {
+          _this[i].math = obj.math
+          break
+        }
+      }
     },
     code_math () {
       this.math--
+      let _this = window._this
       if (window.shopcartview) {
         for (var i in _this) {
           if (_this[i].name === this.name) {
-            _this[i].obj.math = this.math
+            _this[i].math = this.math
             break
           }
         }
@@ -84,7 +93,7 @@ export default {
         math: this.math
       }
       bus.$emit('shopInfo', info)
-      bus.$emit('detailmath', info)
+      // bus.$emit('detailmath', info)
       bus.$emit('detailgood', info)
       var obj = {
         tag: 0,
@@ -95,33 +104,34 @@ export default {
     add_math () {
       this.show = true
       this.math++
+      let _this = window._this
       if (window.shopcartview) {
         for (var i in _this) {
           if (_this[i].name === this.name) {
-            _this[i].obj.math = this.math
+            _this[i].math = this.math
             break
           }
         }
       } else {
-        if (_this.length > 0) {
-          for (let i in _this) {
-            if (_this[i].name === this.name) {
-              _this[i].obj = this
-            } else {
-              let tab = {
-                obj: this,
-                name: this.name
-              }
-              _this.push(tab)
-            }
-          }
-        } else {
-          let tab = {
-            obj: this,
-            name: this.name
-          }
-          _this.push(tab)
-        }
+        // if (_this.length > 0) {
+        //   for (let i in _this) {
+        //     if (_this[i].name === this.name) {
+        //       _this[i].obj = this
+        //     } else {
+        //       let tab = {
+        //         obj: this,
+        //         name: this.name
+        //       }
+        //       _this.push(tab)
+        //     }
+        //   }
+        // } else {
+        //   let tab = {
+        //     obj: this,
+        //     name: this.name
+        //   }
+        //   _this.push(tab)
+        // }
       }
       var price = this.price
       var obj = {
@@ -135,7 +145,7 @@ export default {
       }
       bus.$emit('test', obj)
       bus.$emit('shopInfo', info)
-      bus.$emit('detailmath', info)
+      // bus.$emit('detailmath', info)
       bus.$emit('detailgood', info)
     },
     beforeEnter (el) {
@@ -152,90 +162,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.set-math{
-  position: absolute;
-  right:0;
-  top:0;
-  width: 90px;
-  right: 0;
-  z-index: 100;
-}
-.set-math label{
-  font-size: 12px;
-  color: #93999F;
-  display: block;
-  padding:0 28px;
-  text-align: center;
-  line-height: 24px;
-}
-.code-btn{
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top:0;
-  left:0;
-  z-index: 1;
-  border-radius: 50%;
-  border:2px solid #00A0DC;
-  background:#fff;
-  box-sizing: border-box;
-}
-.code-btn:after{
-  content: '';
-  position: absolute;
-  width: 12px;
-  height:2px;
-  background: #00A0DC;
-  left:4px;
-  top:9px;
-}
-.add-btn{
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  top:0;
-  right: 0;
-  border-radius: 50%;
-  border:2px solid #00A0DC;
-  background:#00A0DC;
-  box-sizing: border-box;
-  z-index: 1;
-}
-.add-btn:after{
-  content:'';
-  position: absolute;
-  width:12px;
-  height:2px;
-  background:#fff;
-  left:4px;
-  top:9px;
-}
-.add-btn:before{
-  content: "";
-  position: absolute;
-  width:12px;
-  height: 2px;
-  background:#fff;
-  left:4px;
-  top:9px;
-  transform: rotateZ(90deg);
-  transform-origin: center;
-}
-.math-cube{
-  position: fixed !important;
-  width: 10px !important;
-  height: 10px !important;
-  z-index: 99 !important;
-  padding:0 !important;
-  border-radius: 50% !important;
-  background: #f00 !important;
-  transition: top 0.2s cubic-bezier(.42,-0.44,.44,.13),
-              left 0.2s linear !important;
-  -webkit-transition: top 0.2s cubic-bezier(.42,-0.44,.44,.13),
-                      left 0.2s linear !important;
-  -moz-transition: top 0.2s cubic-bezier(.42,-0.44,.44,.13),
-                   left 0.2s linear !important;
-}
-</style>
