@@ -67,7 +67,6 @@ export default {
   },
   methods: {
     startinfo (obj) {
-      console.log(1)
       let _this = window._this
       for (var i in _this) {
         if (_this[i].name === obj.name) {
