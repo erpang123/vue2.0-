@@ -8,6 +8,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+//webpack-bashborder
+// var DashboardPlugin = require('webpack-dashboard/plugin')
 
 var env = config.build.env
 
@@ -91,6 +93,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ])
+    // new DashboardPlugin()
   ]
 })
 
@@ -114,7 +117,10 @@ if (config.build.productionGzip) {
 
 if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    reportFilename: `../data/reports/${Date.now()}.html`
+  }))
 }
 
 module.exports = webpackConfig

@@ -23,6 +23,12 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 var compiler = webpack(webpackConfig)
 
+//webpack-bashborder
+var Dashboard = require("webpack-dashboard")
+var DashboardPlugin = require('webpack-dashboard/plugin')
+var dashboard = new Dashboard()
+compiler.apply(new DashboardPlugin(dashboard.setData))
+
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true
@@ -62,30 +68,32 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var fs=require("fs")
-var bodyParser=require("body-parser")
-var data_json
-var router=express.Router()
-fs.readFile("goods.json","utf-8",function(error,data){
-  if(error) console.log(error)
-  data_json=data
-});
+// var fs=require("fs")
+// var bodyParser=require("body-parser")
+// var data_json
+// var router=express.Router()
+// fs.readFile("goods.json","utf-8",function(error,data){
+//   if(error) console.log(error)
+//   data_json=data
+// });
 
-router.get('/seller', (req, res) => {
-  res.json(data_json)
-})
+// router.get('/seller', (req, res) => {
+//   res.json(data_json)
+// })
 
-router.get('/message', (req, res) => {
-  res.json(data_json)
-})
+// router.get('/message', (req, res) => {
+//   res.json(data_json)
+// })
 
-router.get('/goods', (req, res) => {
-  res.json(data_json)
-})
+// router.get('/goods', (req, res) => {
+//   res.json(data_json)
+// })
 
-app.use('/api', router)
+// app.use('/api', router)
 
-var uri = 'http://localhost:' + port
+var ip = require('ip')
+
+var uri = `http://${ip.address()}:${port}`
 
 var _resolve
 var readyPromise = new Promise(resolve => {

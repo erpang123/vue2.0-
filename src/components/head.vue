@@ -32,7 +32,7 @@ export default {
       url: '/api/goods',
       method: 'get'
     }).then((data) => {
-      var goodinfo = JSON.parse(data.body).seller
+      var goodinfo = data.body.seller
       this.goodinfo = goodinfo
     }, (error) => {
       console.log(error)

@@ -60,14 +60,10 @@ export default {
       url: '/api/seller',
       method: 'get'
     }).then((data) => {
-      this.items = JSON.parse(data.body).goods
+      this.items = data.body.goods
     }, (error) => {
       console.log(error)
     })
-    // bus.$off('detailmath')
-    // bus.$on('detailmath', (obj) => {
-    //   this.detail_math(obj)
-    // })
   },
   updated () {
     var index = this.items.length
@@ -118,20 +114,6 @@ export default {
       }
       this.good_math = 0
     }
-    // ,
-    // detail_math (obj) {
-    //   if (this.foodList.length > 0) {
-    //     for (let i in this.foodList) {
-    //       if (this.foodList[i].name === obj.name) {
-    //         this.foodList[i].math = obj.math
-    //       } else {
-    //         this.foodList.push(obj)
-    //       }
-    //     }
-    //   } else {
-    //     this.foodList.push(obj)
-    //   }
-    // }
   }
 }
 </script>

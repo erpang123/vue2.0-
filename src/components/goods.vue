@@ -66,7 +66,7 @@ export default {
       url: '/api/goods',
       method: 'get'
     }).then((data) => {
-      var goodslist = JSON.parse(data.body).seller
+      var goodslist = data.body.seller
       this.shop_info = goodslist
     }, (error) => {
       console.log(error)

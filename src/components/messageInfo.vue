@@ -39,7 +39,7 @@ export default {
       url: '/api/message',
       method: 'get'
     }).then((data) => {
-      var datajson = JSON.parse(data.body).ratings
+      var datajson = data.body.ratings
       var goodMath = 0
       var badMath = 0
       for (let i in datajson) {

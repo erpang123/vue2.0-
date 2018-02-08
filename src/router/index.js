@@ -1,14 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Hello from '@/components/Hello'
-// import Main from '@/components/Main'
 
 Vue.use(Router)
 
 const Main = resolve => require(['@/components/main'], resolve)
-const Seller = resolve => require(['@/components/Seller'], resolve)
-const message = resolve => require(['@/components/message'], resolve)
-const goods = resolve => require(['@/components/goods'], resolve)
+const SellerCube = resolve => require(['@/components/Seller-cube'], resolve)
+const MessageCube = resolve => require(['@/components/message-cube'], resolve)
+const GoodsCube = resolve => require(['@/components/goods-cube'], resolve)
 
 export default new Router({
   routes: [
@@ -22,19 +20,17 @@ export default new Router({
       children: [
         {
           path: 'Seller',
-          component: Seller
+          component: SellerCube
         },
         {
           path: 'message',
-          component: message
+          component: MessageCube
         },
         {
           path: 'goods',
-          component: goods
+          component: GoodsCube
         }
       ]
-      // name: 'Hello',
-      // component: Hello
     }
   ]
 })
