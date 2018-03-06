@@ -12,19 +12,18 @@
       </div>
     </div>
     <div class="gg-info" @click='get_shop'>
-      <p><label ref="alertinfo" style="margin-left:0;">{{goodinfo.bulletin}}</label></p>
+      <p><label ref="alertinfo">{{goodinfo.bulletin}}</label></p>
     </div>
   </div>
 </template>
 
 <script>
-import bus from '../bus.js'
-
 export default {
   data () {
     return {
       first: 1,
-      goodinfo: {}
+      goodinfo: {},
+      translateX: 0
     }
   },
   created () {
@@ -40,12 +39,18 @@ export default {
   },
   updated () {
     if (this.first) {
-      var maxWidth = -(this.$refs.alertinfo.scrollWidth - this.$refs.alertinfo.clientWidth)
-      var slideText = () => {
-        var marLeft = parseInt(this.$refs.alertinfo.style.marginLeft)
-        if (marLeft <= 0 && marLeft > maxWidth) {
-          marLeft--
-          this.$refs.alertinfo.style.marginLeft = marLeft + 'px'
+      let maxWidth = -this.$refs.alertinfo.offsetWidth
+      let slideText = () => {
+        let translateX = parseInt(this.translateX)
+        if (translateX <= maxWidth) {
+          translateX = 0
+          this.translateX = translateX
+        }
+        if (translateX <= 0 && translateX > maxWidth) {
+          translateX--
+          this.translateX = translateX
+          this.$refs.alertinfo.style.transform = 'translateX(' + translateX + 'px)'
+          this.$refs.alertinfo.style.webkitTransform = 'translateX(' + translateX + 'px)'
           setTimeout(() => {
             slideText()
           }, 50)
@@ -57,7 +62,7 @@ export default {
   },
   methods: {
     get_shop () {
-      bus.$emit('blurshop')
+      this.$parent.shop_bool = true
     }
   }
 }

@@ -3,7 +3,6 @@
     <div class="left-nav">
       <div @click="select_this(index)" v-for="(item,index) in items" :class="{'p-active': index == selet}">
         <p>
-          <!-- <img v-if='item.icon!=""' :src="item.icon"/> -->
           <label>{{item.name}}</label>
         </p>
       </div>
@@ -27,20 +26,19 @@
           </div>
         </div>
       </div>
-      <keep-alive>
-        <transition name="slideleft">
-          <detail-info v-if="detail_bool" :good_info="good_info" :good_math="good_math"></detail-info>
-        </transition>
-      </keep-alive>
     </div>
+    <keep-alive>
+      <transition name="slideleft">
+        <detail-info v-if="detail_bool" :good_info="good_info" :good_math="good_math"></detail-info>
+      </transition>
+    </keep-alive>
   </div>
 </template>
 
 <script>
 import sellerlist from './SellerList.vue'
 import detailinfo from './detail-info.vue'
-
-window._this = []
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -80,6 +78,9 @@ export default {
     'detail-info': detailinfo
   },
   methods: {
+    ...mapGetters({
+      getShopInfo: 'getShopInfo'
+    }),
     select_this (index) {
       this.selet = index
       var i = 'info_index' + index
@@ -105,10 +106,11 @@ export default {
     detail_info (obj) {
       this.detail_bool = true
       this.good_info = obj
-      let _this = window._this
-      for (let i in _this) {
-        if (_this[i].name === obj.name) {
-          this.good_math = _this[i].math
+      // 获取购物列表
+      let shopInfos = this.getShopInfo()
+      for (let info of shopInfos) {
+        if (info.name === obj.name) {
+          this.good_math = info.math
           return
         }
       }

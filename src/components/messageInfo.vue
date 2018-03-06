@@ -1,5 +1,5 @@
 <template>
-	<div class="score-info-lists">
+	<div class="score-info-lists" :data-value='reload'>
     <div class="score-info-list" v-for='list in admin_info'>
       <img class="admin-img" :src="list.avatar">
       <div class="admin-score-info">
@@ -22,7 +22,7 @@
 
 <script>
 import star from './star.vue'
-import bus from '../bus.js'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -74,43 +74,65 @@ export default {
       this.$parent.li_list[2].li_math = badMath
       this.admin_info = datajson
       this.all_info = datajson
-      bus.$off('reload')
-      bus.$on('reload', (idx, idy) => {
-        var goodList = []
-        var badList = []
-        if (idx === 0) {
-          this.admin_info = this.all_info
-        } else if (idx === 1) {
-          for (let i in this.all_info) {
-            if (this.all_info[i].score >= 3) {
-              goodList.push(this.all_info[i])
-            }
-          }
-          this.admin_info = goodList
-        } else if (idx === 2) {
-          for (let i in this.all_info) {
-            if (this.all_info[i].score < 3) {
-              badList.push(this.all_info[i])
-            }
-          }
-          this.admin_info = badList
-        }
-        this.reload_info(this.admin_info, idy)
-      })
     }, (error) => {
-      console.log(error)
+      alert(error)
     })
   },
-  methods: {
-    reload_info (obj, bool) {
-      let info = []
-      if (bool) {
-        for (let i in obj) {
-          if (obj[i].text !== '') {
-            info.push(obj[i])
+  computed: {
+    reload () {
+      // 0：全部，1：满意，2：不满意
+      let idx = this.getCheckState()
+      // 是否显示内容
+      let idy = this.getHasContext()
+      // 获取所有评价列表
+      let allInfo = this.all_info
+      if (idy) {
+        let allList = []
+        let goodList = []
+        let badList = []
+        for (let i in allInfo) {
+          if (allInfo[i].text !== '') {
+            allList.push(allInfo[i])
+            if (allInfo[i].score >= 3) {
+              goodList.push(allInfo[i])
+            } else {
+              badList.push(allInfo[i])
+            }
           }
         }
-        this.admin_info = info
+        this.setInfo(allList, goodList, badList, idx)
+      } else {
+        let allList = []
+        let goodList = []
+        let badList = []
+        for (let i in allInfo) {
+          allList.push(allInfo[i])
+          if (allInfo[i].score >= 3) {
+            goodList.push(allInfo[i])
+          } else {
+            badList.push(allInfo[i])
+          }
+        }
+        this.setInfo(allList, goodList, badList, idx)
+      }
+    }
+  },
+  methods: {
+    ...mapGetters({
+      getCheckState: 'getCheckState',
+      getHasContext: 'getHasContext'
+    }),
+    setInfo (...obj) {
+      let [allList, goodList, badList, idx] = obj
+      this.$parent.li_list[0].li_math = allList.length
+      this.$parent.li_list[1].li_math = goodList.length
+      this.$parent.li_list[2].li_math = badList.length
+      if (idx === 0) {
+        this.admin_info = allList
+      } else if (idx === 1) {
+        this.admin_info = goodList
+      } else if (idx === 2) {
+        this.admin_info = badList
       }
     }
   }

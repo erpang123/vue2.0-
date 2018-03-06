@@ -3,10 +3,10 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-const Main = resolve => require(['@/components/main'], resolve)
-const SellerCube = resolve => require(['@/components/Seller-cube'], resolve)
-const MessageCube = resolve => require(['@/components/message-cube'], resolve)
-const GoodsCube = resolve => require(['@/components/goods-cube'], resolve)
+const Main = () => import('@/components/main' /* webpackChunkName: main */)
+const Seller = () => import('@/components/Seller' /* webpackChunkName: Seller */)
+const Message = () => import('@/components/message' /* webpackChunkName: message */)
+const Goods = () => import('@/components/goods' /* webpackChunkName: goods */)
 
 export default new Router({
   routes: [
@@ -20,15 +20,15 @@ export default new Router({
       children: [
         {
           path: 'Seller',
-          component: SellerCube
+          component: Seller
         },
         {
           path: 'message',
-          component: MessageCube
+          component: Message
         },
         {
           path: 'goods',
-          component: GoodsCube
+          component: Goods
         }
       ]
     }

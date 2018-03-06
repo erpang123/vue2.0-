@@ -25,12 +25,11 @@ import foot from './foot'
 import vuehead from './head'
 import shopcart from './shop-cart'
 import shopinfo from './shop-info'
-import bus from '../bus.js'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
-      black_show: false,
       blur_bool: false,
       shop_bool: false
     }
@@ -41,26 +40,21 @@ export default {
     'vue-head': vuehead,
     'shop-info': shopinfo
   },
-  mounted () {
-    bus.$on('blur', () => {
-      this.blur_bool = true
-      this.black_show = true
-    })
-    bus.$on('offblur', () => {
-      this.blur_bool = false
-      this.black_show = false
-    })
-    bus.$on('blurshop', () => {
-      this.blur_bool = true
-      this.shop_bool = true
-    })
+  computed: {
+    black_show () {
+      return this.getShopCat()
+    }
   },
   methods: {
+    ...mapActions({
+      setShopCat: 'setShopCat'
+    }),
+    ...mapGetters({
+      getShopCat: 'getShopCat'
+    }),
     hide_cart () {
-      this.black_show = false
+      this.setShopCat(false)
       this.blur_bool = false
-      bus.$emit('shopCart', 0)
-      bus.$emit('setcart', false)
     }
   }
 }

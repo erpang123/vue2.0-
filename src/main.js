@@ -4,7 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
-import './css/main.css'
+// import './css/main.css'
+import './sass/main.scss'
 // import puppeteer from 'puppeteer'
 
 // (async () => {
@@ -16,6 +17,7 @@ import './css/main.css'
 // })()
 
 import '../mock'
+import { store } from './store'
 
 Vue.use(VueResource)
 Vue.config.productionTip = false
@@ -24,6 +26,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

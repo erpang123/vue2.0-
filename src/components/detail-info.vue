@@ -1,5 +1,5 @@
 <template>
-	<div class="detail-info">
+	<div class="detail-info" :data-value='math'>
     <img class="info-img" :src="info.image">
     <div class="detail-info-title">
       <h6>{{info.name}}</h6>
@@ -41,7 +41,7 @@
 <script>
 import detailraing from './detail-raing.vue'
 import sellerlist from './SellerList.vue'
-import bus from '../bus.js'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -87,48 +87,72 @@ export default {
     if (this.rating_math > 0) {
       this.show_seller = true
     }
-    window.shopcartview = true
-    bus.$off('detailgood')
-    bus.$on('detailgood', (obj) => {
-      this.detail_math(obj)
-    })
+  },
+  computed: {
+    // 获取购物列表
+    math () {
+      let shopInfos = this.getShopInfo()
+      for (let info of shopInfos) {
+        if (info.name === this.info.name) {
+          return
+        }
+      }
+      this.show_seller = false
+    }
   },
   methods: {
+    ...mapGetters({
+      getShopInfo: 'getShopInfo',
+      getSumNum: 'getSumNum',
+      getPrice: 'getPrice',
+      getCartBtn: 'getCartBtn'
+    }),
+    ...mapActions({
+      setInfo: 'setShopInfo',
+      setNum: 'setNum',
+      setPrice: 'setPrice'
+    }),
     back_page () {
       this.$parent.detail_bool = false
-      window.shopcartview = false
     },
     get_rating (index) {
       this.select_index = index
-      bus.$emit('detailinfo', index, this.select_p)
     },
     get_info () {
       this.select_p = !this.select_p
-      bus.$emit('hasinfo', this.select_index, this.select_p)
     },
     add_cart () {
       this.show_seller = true
       this.rating_math = 1
-      var obj = {
-        tag: 1,
-        price: this.info.price
-      }
       var info = {
         name: this.info.name,
         price: this.info.price,
         math: this.rating_math
       }
-      bus.$emit('test', obj)
-      bus.$emit('shopInfo', info)
-      bus.$emit('startinfo', info)
+      // 增加总价
+      this.setSumPrice(this.info.price)
+      // 增加商品总数
+      this.setSumNum(1)
+      // 存储商品列表
+      this.sendInfo(info)
     },
-    detail_math (obj) {
-      if (this.info.name === obj.name) {
-        this.rating_math = obj.math
-        if (this.rating_math === 0) {
-          this.show_seller = false
-        }
-      }
+    // 存储商品列表
+    sendInfo (info) {
+      let shopInfo = this.getShopInfo()
+      shopInfo.push(info)
+      this.setInfo(shopInfo)
+    },
+    // 存储商品总数
+    setSumNum (a) {
+      let num = this.getSumNum()
+      num = parseInt(a) + num
+      this.setNum(num)
+    },
+    // 存储商品总价
+    setSumPrice (a) {
+      let price = this.getPrice()
+      price += parseInt(a)
+      this.setPrice(price)
     }
   }
 }

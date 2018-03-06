@@ -36,7 +36,7 @@
 <script>
 import star from './star.vue'
 import messageInfo from './messageInfo.vue'
-import bus from '../bus.js'
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -66,13 +66,21 @@ export default {
     'message-info': messageInfo
   },
   methods: {
+    ...mapActions({
+      setCheckState: 'setCheckState',
+      setHasContext: 'setHasContext'
+    }),
     get_rating (index) {
       this.select_index = index
-      bus.$emit('reload', this.select_index, this.select_p)
+      // 筛选条件
+      this.setCheckState(this.select_index)
+      this.setHasContext(this.select_p)
     },
     get_info () {
       this.select_p = !this.select_p
-      bus.$emit('reload', this.select_index, this.select_p)
+      // 筛选条件
+      this.setCheckState(this.select_index)
+      this.setHasContext(this.select_p)
     }
   }
 }

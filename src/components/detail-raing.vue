@@ -1,5 +1,5 @@
 <template>
-	<div class="detail-rating">
+	<div class="detail-rating" :data-value='reload'>
     <div class="detail-rating-list" v-for="rating in rating_info">
       <div class="detail-rating-title">
         <p>{{rating.rateTime}}</p>
@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import bus from '../bus.js'
-
 export default {
   props: {
     rating: {
@@ -60,14 +58,15 @@ export default {
     this.$parent.li_list[0].li_math = allLength
     this.$parent.li_list[1].li_math = goodLength
     this.$parent.li_list[2].li_math = badLength
-    bus.$off('detailinfo')
-    bus.$off('hasinfo')
-    bus.$on('detailinfo', (a, bool) => {
-      this.scr_info(a, bool)
-    })
-    bus.$on('hasinfo', (a, bool) => {
-      this.scr_info(a, bool)
-    })
+  },
+  computed: {
+    reload () {
+      // 0：全部，1：推荐，2：不推荐
+      let index = this.$parent.select_index
+      // 是否只看有内容的
+      let bool = this.$parent.select_p
+      this.scr_info(index, bool)
+    }
   },
   methods: {
     scr_info (a, bool) {

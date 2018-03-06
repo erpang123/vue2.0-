@@ -1,5 +1,6 @@
 <template>
-	<div class="shop-cart" v-if='cart_boolean'>
+	<div class="shop-cart" v-if='showCube'>
+    <div v-if="cart_bool" class="mask"></div>
     <div class="shop-cart-alert" v-if="cart_bool">
       <h6>是否要清空购物车</h6>
       <p>
@@ -27,53 +28,45 @@
 
 <script>
 import sellerlist from './SellerList'
-import bus from '../bus.js'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
       goods: [],
-      cart_boolean: false,
       cart_bool: false
     }
   },
   components: {
     'seller-list': sellerlist
   },
-  mounted () {
-    bus.$off('shopCart')
-    bus.$off('shopInfo')
-    bus.$on('shopCart', (a) => {
-      if (a === 1) {
-        this.cart_boolean = true
-      } else {
-        this.cart_boolean = false
-      }
-    })
-    bus.$on('shopInfo', (obj) => {
-      var goods = this.goods
-      for (var i in goods) {
-        if (goods[i].name === obj.name) {
-          if (obj.math === 0) {
-            goods.splice(i, 1)
-            return
-          }
-          goods[i].math = obj.math
-          return
-        }
-      }
-      this.goods.push(obj)
-    })
+  computed: {
+    showCube () {
+      this.goods = this.getShopInfo()
+      return this.getShopCat()
+    }
   },
   methods: {
+    ...mapActions({
+      sendInfo: 'setShopInfo',
+      setShopCat: 'setShopCat',
+      setPrice: 'setPrice',
+      setNum: 'setNum'
+    }),
+    ...mapGetters({
+      getShopInfo: 'getShopInfo',
+      getShopCat: 'getShopCat'
+    }),
     clear_info () {
       this.cart_bool = false
-      this.cart_boolean = false
-      bus.$emit('offblur')
-      bus.$emit('setcart', false)
-      bus.$emit('cleartest')
-      bus.$emit('clearcart')
-      this.goods = []
+      // 隐藏购物车
+      this.setShopCat(false)
+      // 清空购物车列表
+      this.sendInfo([])
+      // 清除总价格
+      this.setPrice(0)
+      // 清除总产品数
+      this.setNum(0)
     }
   }
 }

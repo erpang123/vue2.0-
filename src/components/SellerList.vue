@@ -1,16 +1,18 @@
 <template>
   <div class="set-math">
-    <transition name='grid' @before-enter="beforeEnter" @after-enter="afterEnter">
-      <a v-if="show" class="math-cube"></a>
+    <transition name='grid' @before-enter="beforeEnter" @after-enter='afterEnter'>
+      <div v-if="show" class="math-cube-c">
+        <a class="math-cube" ref='mathA'></a>
+      </div>
     </transition>
     <span v-if="math != 0" class="code-btn" @click.stop="code_math"></span>
-    <label :data-value="new_math">{{math}}</label>
+    <label :data-value='newMath'>{{math}}</label>
     <span class="add-btn" ref='add_btn' @click.stop="add_math"></span>
   </div>
 </template>
 
 <script>
-import bus from '../bus.js'
+import { mapActions, mapGetters } from 'vuex'
 
 window.shopcartview = false // 是否是购物车界面的加减
 
@@ -33,129 +35,114 @@ export default {
     return {
       math: 0,
       price: 0,
+      name: '',
       show: false,
-      name: ''
+      pageX: 0,
+      pageY: 0
     }
   },
-  created () {
-    this.math = this.food_math
-    this.price = this.food_price
-    this.name = this.food_name
-    bus.$off('setcart')
-    bus.$off('clearcart')
-    bus.$off('startinfo')
-    bus.$on('setcart', (a) => {
-      window.shopcartview = a
-    })
-    bus.$on('clearcart', () => {
-      let _this = window._this
-      for (let i in _this) {
-        _this[i].math = 0
-      }
-      _this = []
-    })
-    bus.$on('startinfo', (obj) => {
-      this.startinfo(obj)
-    })
-  },
   computed: {
-    new_math () {
-      this.math = this.food_math
-      this.price = this.food_price
+    newMath () {
       this.name = this.food_name
+      this.price = this.food_price
+      let shopInfos = this.getShopInfo()
+      for (let info of shopInfos) {
+        if (this.name === info.name) {
+          this.math = info.math
+          return
+        }
+      }
+      this.math = 0
     }
   },
   methods: {
-    startinfo (obj) {
-      let _this = window._this
-      for (var i in _this) {
-        if (_this[i].name === obj.name) {
-          _this[i].math = obj.math
-          break
-        }
-      }
-    },
+    ...mapGetters({
+      getShopInfo: 'getShopInfo',
+      getSumNum: 'getSumNum',
+      getPrice: 'getPrice'
+    }),
+    ...mapActions({
+      setInfo: 'setShopInfo',
+      setNum: 'setNum',
+      setPrice: 'setPrice'
+    }),
     code_math () {
       this.math--
-      let _this = window._this
-      if (window.shopcartview) {
-        for (var i in _this) {
-          if (_this[i].name === this.name) {
-            _this[i].math = this.math
-            break
-          }
-        }
-      }
-      var info = {
+      let info = {
         name: this.name,
         price: this.price,
         math: this.math
       }
-      bus.$emit('shopInfo', info)
-      // bus.$emit('detailmath', info)
-      bus.$emit('detailgood', info)
-      var obj = {
-        tag: 0,
-        price: this.price
-      }
-      bus.$emit('test', obj)
+      // 减少总价
+      this.setSumPrice(-this.price)
+      // 减商品总数
+      this.setSumNum(-1)
+      // 存储商品列表
+      this.sendInfo(info)
     },
     add_math () {
       this.show = true
       this.math++
-      let _this = window._this
-      if (window.shopcartview) {
-        for (var i in _this) {
-          if (_this[i].name === this.name) {
-            _this[i].math = this.math
-            break
-          }
-        }
-      } else {
-        // if (_this.length > 0) {
-        //   for (let i in _this) {
-        //     if (_this[i].name === this.name) {
-        //       _this[i].obj = this
-        //     } else {
-        //       let tab = {
-        //         obj: this,
-        //         name: this.name
-        //       }
-        //       _this.push(tab)
-        //     }
-        //   }
-        // } else {
-        //   let tab = {
-        //     obj: this,
-        //     name: this.name
-        //   }
-        //   _this.push(tab)
-        // }
-      }
-      var price = this.price
-      var obj = {
-        tag: 1,
-        price: price
-      }
-      var info = {
+      let info = {
         name: this.name,
-        price: price,
+        price: this.price,
         math: this.math
       }
-      bus.$emit('test', obj)
-      bus.$emit('shopInfo', info)
-      // bus.$emit('detailmath', info)
-      bus.$emit('detailgood', info)
+      // 增加总价
+      this.setSumPrice(this.price)
+      // 添加商品总数
+      this.setSumNum(1)
+      // 判断列表中是否有数据
+      this.sendInfo(info)
+    },
+    // 判断列表中是否有数据
+    sendInfo (info) {
+      let shopInfos = this.getShopInfo()
+      if (shopInfos.length === 0) {
+        shopInfos.push(info)
+      } else {
+        for (let k = 0; k < shopInfos.length; k++) {
+          if (shopInfos[k].name === info.name) {
+            if (info.math === 0) {
+              shopInfos.splice(k, 1)
+            } else {
+              shopInfos[k].math = info.math
+            }
+            break
+          } else if (k === shopInfos.length - 1) {
+            shopInfos.push(info)
+          }
+        }
+      }
+      this.setInfo(shopInfos)
+    },
+    // 存储商品总数
+    setSumNum (a) {
+      let num = this.getSumNum()
+      num = parseInt(a) + num
+      this.setNum(num)
+    },
+    // 存储商品总价
+    setSumPrice (a) {
+      let price = this.getPrice()
+      price += parseInt(a)
+      this.setPrice(price)
     },
     beforeEnter (el) {
-      var x = event.clientX
-      var y = event.clientY
-      el.style.top = y + 'px'
-      el.style.left = x + 'px'
+      // let pi = document.documentElement.clientWidth / 375 * 100
+      this.pageX = event.clientX
+      this.pageY = event.clientY
+      el.style.top = this.pageY + 'px'
+      el.style.left = this.pageX + 'px'
+      el.style.visibility = 'hidden'
     },
     afterEnter (el) {
-      el.style.top = '612px'
-      el.style.left = '45px'
+      el.style.visibility = 'visible'
+      let pi = document.documentElement.clientWidth / 375 * 100
+      let x = this.pageX - pi * 0.32
+      let y = document.documentElement.clientHeight - this.pageY
+      el.style.transform = 'translateX(' + -x + 'px) '
+      this.$refs.mathA.style.transform = 'translateY(' + y + 'px)'
       this.show = false
     }
   }
