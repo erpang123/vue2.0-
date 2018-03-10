@@ -23,7 +23,6 @@ export default {
   },
   created () {
     this.star = this.star_list
-    // this.star_has = this.star_active
   },
   computed: {
     star_has () {

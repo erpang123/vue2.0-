@@ -39,6 +39,7 @@
 import sellerlist from './SellerList.vue'
 import detailinfo from './detail-info.vue'
 import { mapGetters } from 'vuex'
+import { GetSeller } from '@/request/api'
 
 export default {
   data () {
@@ -54,14 +55,7 @@ export default {
     }
   },
   created () {
-    this.$http({
-      url: '/api/seller',
-      method: 'get'
-    }).then((data) => {
-      this.items = data.body.goods
-    }, (error) => {
-      console.log(error)
-    })
+    this.setSeller()
   },
   updated () {
     var index = this.items.length
@@ -81,6 +75,11 @@ export default {
     ...mapGetters({
       getShopInfo: 'getShopInfo'
     }),
+    // 获取产品详情信息
+    async setSeller () {
+      let res = await GetSeller()
+      this.items = res.goods
+    },
     select_this (index) {
       this.selet = index
       var i = 'info_index' + index

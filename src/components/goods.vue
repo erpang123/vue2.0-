@@ -49,6 +49,7 @@
 
 <script>
 import star from './star.vue'
+import { GetGoods } from '@/request/api'
 
 export default {
   data () {
@@ -62,15 +63,15 @@ export default {
     star: star
   },
   created () {
-    this.$http({
-      url: '/api/goods',
-      method: 'get'
-    }).then((data) => {
-      var goodslist = data.body.seller
+    this.setGoods()
+  },
+  methods: {
+    // 获取产品列表
+    async setGoods () {
+      let res = await GetGoods()
+      let goodslist = res.seller
       this.shop_info = goodslist
-    }, (error) => {
-      console.log(error)
-    })
+    }
   }
 }
 </script>

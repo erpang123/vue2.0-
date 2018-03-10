@@ -36,6 +36,7 @@
 
 <script>
 import star from './star'
+import { GetGoods } from '@/request/api'
 
 export default {
   data () {
@@ -47,19 +48,17 @@ export default {
     'star': star
   },
   created () {
-    this.$http({
-      url: '/api/goods',
-      method: 'get'
-    }).then((data) => {
-      this.good_info = data.body.seller
-    }, (error) => {
-      console.log(error)
-    })
+    this.setGoods()
   },
   methods: {
     hide_info () {
       this.$parent.blur_bool = false
       this.$parent.shop_bool = false
+    },
+    // 获取产品列表
+    async setGoods () {
+      let res = await GetGoods()
+      this.good_info = res.seller
     }
   }
 }

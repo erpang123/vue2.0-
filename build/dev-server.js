@@ -24,10 +24,10 @@ var app = express()
 var compiler = webpack(webpackConfig)
 
 //webpack-bashborder
-var Dashboard = require("webpack-dashboard")
-var DashboardPlugin = require('webpack-dashboard/plugin')
-var dashboard = new Dashboard()
-compiler.apply(new DashboardPlugin(dashboard.setData))
+// var Dashboard = require("webpack-dashboard")
+// var DashboardPlugin = require('webpack-dashboard/plugin')
+// var dashboard = new Dashboard()
+// compiler.apply(new DashboardPlugin(dashboard.setData))
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,

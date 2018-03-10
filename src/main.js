@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueResource from 'vue-resource'
 // import './css/main.css'
 import './sass/main.scss'
 // import puppeteer from 'puppeteer'
@@ -19,8 +18,7 @@ import './sass/main.scss'
 import '../mock'
 import { store } from './store'
 
-Vue.use(VueResource)
-Vue.config.productionTip = false
+// Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({

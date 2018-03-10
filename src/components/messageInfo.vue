@@ -23,6 +23,7 @@
 <script>
 import star from './star.vue'
 import { mapGetters } from 'vuex'
+import { GetMessage } from '@/request/api'
 
 export default {
   data () {
@@ -35,48 +36,7 @@ export default {
     star: star
   },
   created () {
-    this.$http({
-      url: '/api/message',
-      method: 'get'
-    }).then((data) => {
-      var datajson = data.body.ratings
-      var goodMath = 0
-      var badMath = 0
-      for (let i in datajson) {
-        var _this = datajson[i]
-        if (_this.score >= 3) {
-          goodMath++
-        } else {
-          badMath++
-        }
-        var date = new Date(_this.rateTime)
-        var year = date.getFullYear()
-        var month = date.getMonth() + 1
-        if (month < 10) {
-          month = '0' + month
-        }
-        var day = date.getDate()
-        if (day < 10) {
-          day += '0' + day
-        }
-        var hours = date.getHours()
-        if (hours < 10) {
-          hours += '0' + hours
-        }
-        var minutes = date.getMinutes()
-        if (minutes < 10) {
-          minutes += '0' + minutes
-        }
-        _this.rateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
-      }
-      this.$parent.li_list[0].li_math = datajson.length
-      this.$parent.li_list[1].li_math = goodMath
-      this.$parent.li_list[2].li_math = badMath
-      this.admin_info = datajson
-      this.all_info = datajson
-    }, (error) => {
-      alert(error)
-    })
+    this.setMessage()
   },
   computed: {
     reload () {
@@ -122,6 +82,44 @@ export default {
       getCheckState: 'getCheckState',
       getHasContext: 'getHasContext'
     }),
+    async setMessage () {
+      let res = await GetMessage()
+      var datajson = res.ratings
+      var goodMath = 0
+      var badMath = 0
+      for (let i in datajson) {
+        var _this = datajson[i]
+        if (_this.score >= 3) {
+          goodMath++
+        } else {
+          badMath++
+        }
+        var date = new Date(_this.rateTime)
+        var year = date.getFullYear()
+        var month = date.getMonth() + 1
+        if (month < 10) {
+          month = '0' + month
+        }
+        var day = date.getDate()
+        if (day < 10) {
+          day += '0' + day
+        }
+        var hours = date.getHours()
+        if (hours < 10) {
+          hours += '0' + hours
+        }
+        var minutes = date.getMinutes()
+        if (minutes < 10) {
+          minutes += '0' + minutes
+        }
+        _this.rateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
+      }
+      this.$parent.li_list[0].li_math = datajson.length
+      this.$parent.li_list[1].li_math = goodMath
+      this.$parent.li_list[2].li_math = badMath
+      this.admin_info = datajson
+      this.all_info = datajson
+    },
     setInfo (...obj) {
       let [allList, goodList, badList, idx] = obj
       this.$parent.li_list[0].li_math = allList.length

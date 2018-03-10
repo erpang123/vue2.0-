@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { GetGoods } from '@/request/api'
+
 export default {
   data () {
     return {
@@ -27,15 +29,7 @@ export default {
     }
   },
   created () {
-    this.$http({
-      url: '/api/goods',
-      method: 'get'
-    }).then((data) => {
-      var goodinfo = data.body.seller
-      this.goodinfo = goodinfo
-    }, (error) => {
-      console.log(error)
-    })
+    this.setGoods()
   },
   updated () {
     if (this.first) {
@@ -63,6 +57,12 @@ export default {
   methods: {
     get_shop () {
       this.$parent.shop_bool = true
+    },
+    // 获取产品列表
+    async setGoods () {
+      let res = await GetGoods()
+      let goodslist = res.seller
+      this.goodinfo = goodslist
     }
   }
 }
