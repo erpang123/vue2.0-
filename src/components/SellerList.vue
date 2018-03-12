@@ -1,20 +1,18 @@
 <template>
   <div class="set-math">
-    <transition name='grid' @before-enter="beforeEnter" @after-enter='afterEnter'>
+    <!-- <transition name='grid' @before-enter="beforeEnter" @after-enter='afterEnter'>
       <div v-if="show" class="math-cube-c">
         <a class="math-cube" ref='mathA'></a>
       </div>
-    </transition>
+    </transition> -->
     <span v-if="math != 0" class="code-btn" @click.stop="code_math"></span>
     <label :data-value='newMath'>{{math}}</label>
-    <span class="add-btn" ref='add_btn' @click.stop="add_math"></span>
+    <span class="add-btn" ref='add_btn' @click.stop="add_math($event)"></span>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-
-window.shopcartview = false // 是否是购物车界面的加减
 
 export default {
   props: {
@@ -80,7 +78,7 @@ export default {
       // 存储商品列表
       this.sendInfo(info)
     },
-    add_math () {
+    add_math (e) {
       this.show = true
       this.math++
       let info = {
@@ -94,6 +92,8 @@ export default {
       this.setSumNum(1)
       // 判断列表中是否有数据
       this.sendInfo(info)
+      // 添加动效(函数文件在myplugin中)
+      this.circleAnimate(e)
     },
     // 判断列表中是否有数据
     sendInfo (info) {
@@ -127,24 +127,24 @@ export default {
       let price = this.getPrice()
       price += parseInt(a)
       this.setPrice(price)
-    },
-    beforeEnter (el) {
-      // let pi = document.documentElement.clientWidth / 375 * 100
-      this.pageX = event.clientX
-      this.pageY = event.clientY
-      el.style.top = this.pageY + 'px'
-      el.style.left = this.pageX + 'px'
-      el.style.visibility = 'hidden'
-    },
-    afterEnter (el) {
-      el.style.visibility = 'visible'
-      let pi = document.documentElement.clientWidth / 375 * 100
-      let x = this.pageX - pi * 0.32
-      let y = document.documentElement.clientHeight - this.pageY
-      el.style.transform = 'translateX(' + -x + 'px) '
-      this.$refs.mathA.style.transform = 'translateY(' + y + 'px)'
-      this.show = false
     }
+    // beforeEnter (el) {
+    //   // let pi = document.documentElement.clientWidth / 375 * 100
+    //   this.pageX = event.clientX
+    //   this.pageY = event.clientY
+    //   el.style.top = this.pageY + 'px'
+    //   el.style.left = this.pageX + 'px'
+    //   el.style.visibility = 'hidden'
+    // },
+    // afterEnter (el) {
+    //   el.style.visibility = 'visible'
+    //   let pi = document.documentElement.clientWidth / 375 * 100
+    //   let x = this.pageX - pi * 0.32
+    //   let y = document.documentElement.clientHeight - this.pageY
+    //   el.style.transform = 'translateX(' + -x + 'px) '
+    //   this.$refs.mathA.style.transform = 'translateY(' + y + 'px)'
+    //   this.show = false
+    // }
   }
 }
 </script>

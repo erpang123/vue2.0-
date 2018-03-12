@@ -239,8 +239,8 @@ a {
   line-height: 0.4rem;
 }
 .back{
-  position: fixed;
-  bottom:0.6rem;
+  position: absolute;
+  bottom:0.2rem;
   right: 0.2rem;
   width: 0.4rem;
   height: 0.4rem;
@@ -484,9 +484,7 @@ small{
 
 .math-cube-c{
   position: fixed !important;
-  width: 0.1rem !important;
-  height: 0.1rem !important;
-  z-index: 99;
+  z-index: 130;
   padding:0 !important;
   border-radius: 50% !important;
   transition: transform .5s linear;

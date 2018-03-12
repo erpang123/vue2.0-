@@ -12,7 +12,7 @@
           <label>￥{{info.price}}</label>
           <label v-if="info.oldPrice != ''">￥{{info.oldPrice}}</label>
         </p>
-        <a @click="add_cart" v-if="!show_seller">加入购物车</a>
+        <a @click="add_cart($event)" v-if="!show_seller">加入购物车</a>
         <div v-if="show_seller" class="show-seller">
           <seller-list :food_name='info.name' :food_math='rating_math' :food_price='info.price'></seller-list>
         </div>
@@ -121,7 +121,7 @@ export default {
     get_info () {
       this.select_p = !this.select_p
     },
-    add_cart () {
+    add_cart (e) {
       this.show_seller = true
       this.rating_math = 1
       var info = {
@@ -135,6 +135,8 @@ export default {
       this.setSumNum(1)
       // 存储商品列表
       this.sendInfo(info)
+      // 添加动效(函数文件在myplugin中)
+      this.circleAnimate(e)
     },
     // 存储商品列表
     sendInfo (info) {

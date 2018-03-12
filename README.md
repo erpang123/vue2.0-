@@ -2,7 +2,7 @@
     用vue开发的模仿饿了吗移动端单个餐厅页面（vue上手项目）
 
 # 技术栈
-vue2 + vuex + vue-router + webpack + es6 + vue-resource + flex布局 + sass
+vue2 + vuex + vue-router + webpack + es6 + axios + flex布局 + sass
 
 # 演示
 [查看演示效果](https://erpang123.github.io/vue2.0-dom/dist-html)（请用chrome的手机模式预览）

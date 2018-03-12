@@ -18,6 +18,11 @@ import './sass/main.scss'
 import '../mock'
 import { store } from './store'
 
+// 导入公用方法
+import { MyPlugin } from './myPlugin'
+
+Vue.use(MyPlugin)
+
 // Vue.config.productionTip = false
 
 /* eslint-disable no-new */
