@@ -1,0 +1,13 @@
+@mixin border_1($t: auto, $b: auto, $l: 0, $r: 0, $o: 1, $color: #e6e6e6) {
+	content: '';
+	position: absolute;
+	transform: scaleY(0.5);
+	transform-origin: 0 0;
+	background: $color;
+	top: $t;
+	bottom: $b;
+	opacity: $o;
+	left: $l;
+	right: $r;
+	height: 1px;
+}

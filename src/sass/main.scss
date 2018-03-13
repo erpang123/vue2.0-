@@ -1,3 +1,5 @@
+@import './mixin.scss';
+
 //设置字体变量
 $fontSize0: 12px;
 $fontSize1: 14px;
@@ -92,15 +94,7 @@ a {
 		}
 	}
 	&:after{
-		content: '';
-		position: absolute;
-		bottom:0;
-		left: 0;
-		right: 0;
-		transform: scaleY(0.5);
-		transform-origin: 0 0;
-		background: #d8d8d8;
-		height:1px;
+		@include border_1($b: 0, $color: #d8d8d8);
 	}
 }
 
@@ -123,14 +117,7 @@ a {
 	  position: relative;
 	  padding:0 0.16rem 0.2rem;
 	  &:after{
-	  	content: '';
-		  position: absolute;
-		  bottom: 0;
-		  left: 0;
-		  right: 0;
-		  height: 1px;
-		  background:#e6e6e6;
-		  transform: scaleY(0.5);
+	  	@include border_1($b: 0);
 	  } 
 	}
 	p{
@@ -219,15 +206,7 @@ a {
 				}
 		  }
 		  &:after{
-		  	content: '';
-			  position: absolute;
-			  bottom:0;
-			  left: 0;
-			  right: 0;
-			  height: 1px;
-			  background: #E9EAEB;
-			  transform: scaleY(0.5);
-			  transform-origin: 0 0;
+		  	@include border_1($b: 0, $color: #E9EAEB);
 		  }
 		}
 	}
@@ -291,15 +270,7 @@ a {
 	  padding:0.18rem 0 0.08rem;
 	}
   &:after{
-  	content: '';
-	  position: absolute;
-	  bottom:0;
-	  left:0;
-	  right:0;
-	  height: 1px;
-	  background: rgba(7,17,27,0.1);
-	  transform: scaleY(0.5);
-	  transform-origin: 0 0;
+  	@include border_1($b: 0, $color: rgba(7,17,27,0.1));
   }
 }
 .detail-info-money {
@@ -399,14 +370,7 @@ a {
 	  background-size: 0.25rem;
 	}
 	&:before{
-	  content: '';
-	  position: absolute;
-	  top:0;
-	  left: 0.16rem;
-	  right: 0.16rem;
-	  height: 1px;
-	  transform: scaleY(0.5);
-	  background:#EBECED;
+		@include border_1($b: 0, $l: 0.16rem, $r: 0.16rem, $color: #EBECED);
 	}
 }
 small{
@@ -530,14 +494,7 @@ small{
 	  display: flex;
 	  align-items: center;
 	  &:after{
-		  content: '';
-		  position: absolute;
-		  height: 1px;
-		  left: 0.12rem;
-		  right: 0.12rem;
-		  background:#E6E7E9;
-		  transform: scaleY(0.5);
-		  bottom:0;
+	  	@include border_1($b: 0, $l: 0.12rem, $r: 0.12rem, $color: #E6E7E9);
 		}
 		&.p-active{
 		  background:#fff;
@@ -630,14 +587,7 @@ small{
   position: relative;
   padding: 0.16rem 0;
   &:after{
-	  content: '';
-	  position: absolute;
-	  bottom:0;
-	  left: 0;
-	  right: 0;
-	  height: 1px;
-	  transform: scaleY(0.5);
-	  background: #E7E8E9;
+  	@include border_1($b: 0, $color: #E7e8e9);
 	}
 }
 .detail-rating-title{
@@ -817,15 +767,7 @@ small{
   padding-bottom: 0.16rem;
   position: relative;
   &:after{
-	  content: '';
-	  position: absolute;
-	  bottom:0;
-	  left:0px;
-	  right:0px;
-	  height:1px;
-	  transform: scaleY(0.5);
-	  transform-origin: 0 0;
-	  background:#EBECED;
+  	@include border_1($b: 0, $color: #EBECED);
 	}
 }
 .com-info-class{
@@ -838,15 +780,7 @@ small{
   padding-left: 0.34rem;
   position: relative;
   &:not(:last-child):after{
-	  content: '';
-	  position: absolute;
-	  bottom:0;
-	  left:0px;
-	  right:0px;
-	  height:1px;
-	  transform: scaleY(0.5);
-	  transform-origin: 0 0;
-	  background:#EBECED;
+  	@include border_1($b: 0, $color: #EBECED);
 	}
 }
 .com-info-img1{
@@ -909,15 +843,7 @@ small{
   padding-bottom: 0.18rem;
   position: relative;
   &:after{
-	  content: '';
-	  position: absolute;
-	  bottom:0;
-	  left:0px;
-	  right:0px;
-	  height:1px;
-	  transform: scaleY(0.5);
-	  transform-origin: 0 0;
-	  background:#EBECED;
+  	@include border_1($b: 0, $color: #EBECED);
 	}
 }
 .merchants-title2{
@@ -931,15 +857,7 @@ small{
 	  overflow: hidden;
 	  position: relative;
 	  &:not(:last-child):after{
-		  content: '';
-		  position: absolute;
-		  bottom:0;
-		  top:0;
-		  right:0px;
-		  width:1px;
-		  transform: scaleX(0.5);
-		  transform-origin: 0 0;
-		  background:#EBECED;
+	  	@include border_1($b: 0, $color: #EBECED);
 		}
 		p{
 			font-size: $fontSize3;
@@ -1000,15 +918,7 @@ small{
 	  font-weight: normal;
 	  position: relative;
 	  &:after{
-		  content: '';
-		  position: absolute;
-		  bottom:0;
-		  left:0px;
-		  right:0px;
-		  height:1px;
-		  transform: scaleY(0.5);
-		  transform-origin: 0 0;
-		  background:#EBECED;
+	  	@include border_1($b: 0, $color: #EBECED);
 		}
 	}
 	div{
@@ -1021,15 +931,7 @@ small{
 		  font-size: $fontSize0;
 		  position: relative;
 		  &:not(:last-child):after{
-			  content: '';
-			  position: absolute;
-			  bottom:0;
-			  left:0px;
-			  right:0px;
-			  height:1px;
-			  transform: scaleY(0.5);
-			  transform-origin: 0 0;
-			  background:#EBECED;
+		  	@include border_1($b: 0, $color: #EBECED);
 			}
 		}
 	}
@@ -1073,14 +975,7 @@ small{
 	  background-size: 0.06rem;
 	}
 	&:after{
-	  position: absolute;
-	  content: '';
-	  background:#000;
-	  opacity: 0.3;
-	  left:0;
-	  top:0;
-	  right:0;
-	  bottom:0;
+		@include border_1($t: 0, $b: 0, $o: 0.3, $color: #000);
 	  border-radius: 0.24rem;
 	}
 }
@@ -1138,14 +1033,7 @@ small{
 	  z-index: 1;
 	}
 	&:after{
-	  position: absolute;
-	  left:0;
-	  right:0;
-	  top:0;
-	  bottom:0;
-	  background:#000;
-	  opacity: 0.3;
-	  content: '';
+		@include border_1($t: 0, $b: 0, $o: 0.3, $color: #000);
 	}
 	&:before{
 	  content: '';
@@ -1274,14 +1162,7 @@ small{
 	  background-size: 0.25rem;
 	}
 	&:after{
-	  content: '';
-	  position: absolute;
-	  top:0;
-	  left: 0.16rem;
-	  right: 0.16rem;
-	  height: 1px;
-	  transform: scaleY(0.5);
-	  background:#EBECED;
+		@include border_1($t: 0, $l: 0.16rem, $r: 0.16rem, $color: #EBECED);
 	}
 }
 small{
@@ -1296,14 +1177,7 @@ small{
   padding:0.18rem 0;
   position: relative;
   &:after{
-	  position: absolute;
-	  content: '';
-	  left:0;
-	  right:0;
-	  bottom:0;
-	  height:1px;
-	  transform: scaleY(0.5);
-	  background:#F1F1F2;
+  	@include border_1($b: 0, $color: #F1F1F2);
 	}
 }
 .admin-img{
