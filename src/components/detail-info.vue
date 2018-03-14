@@ -1,34 +1,36 @@
 <template>
 	<div class="detail-info" :data-value='math'>
-    <img class="info-img" :src="info.image">
-    <div class="detail-info-title">
-      <h6>{{info.name}}</h6>
-      <p>
-        <label>月售{{info.sellCount}}份</label>
-        <label v-if="info.rating != ''">好评率{{info.rating}}</label>
-      </p>
-      <div class="detail-info-money">
+    <div class="detail-info-cube">
+      <img class="info-img" :src="info.image">
+      <div class="detail-info-title">
+        <h6>{{info.name}}</h6>
         <p>
-          <label>￥{{info.price}}</label>
-          <label v-if="info.oldPrice != ''">￥{{info.oldPrice}}</label>
+          <label>月售{{info.sellCount}}份</label>
+          <label v-if="info.rating != ''">好评率{{info.rating}}</label>
         </p>
-        <a @click="add_cart($event)" v-if="!show_seller">加入购物车</a>
-        <div v-if="show_seller" class="show-seller">
-          <seller-list :food_name='info.name' :food_math='rating_math' :food_price='info.price'></seller-list>
+        <div class="detail-info-money">
+          <p>
+            <label>￥{{info.price}}</label>
+            <label v-if="info.oldPrice != ''">￥{{info.oldPrice}}</label>
+          </p>
+          <a @click="add_cart($event)" v-if="!show_seller">加入购物车</a>
+          <div v-if="show_seller" class="show-seller">
+            <seller-list :food_name='info.name' :food_math='rating_math' :food_price='info.price'></seller-list>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="detail-info-desc">
-      <h6>商品介绍</h6>
-      <div>{{info.info}}</div>
-    </div>
-    <div class="detail-info-view">
-      <h6>商品评价</h6>
-      <ul class="detail-info-banner">
-        <li @click="get_rating(index)" :class="{'li-active': select_index == index}" v-for="(list,index) in li_list">{{list.li_name}}<small>{{list.li_math}}</small></li>
-      </ul>
-      <p class="detail-con-degree" :class="{'success-active': select_p}" @click="get_info">只看有内容的评价</p>
-      <detail-raing :rating = "info.ratings"></detail-raing>
+      <div class="detail-info-desc">
+        <h6>商品介绍</h6>
+        <div>{{info.info}}</div>
+      </div>
+      <div class="detail-info-view">
+        <h6>商品评价</h6>
+        <ul class="detail-info-banner">
+          <li @click="get_rating(index)" :class="{'li-active': select_index == index}" v-for="(list,index) in li_list">{{list.li_name}}<small>{{list.li_math}}</small></li>
+        </ul>
+        <p class="detail-con-degree" :class="{'success-active': select_p}" @click="get_info">只看有内容的评价</p>
+        <detail-raing :rating = "info.ratings"></detail-raing>
+      </div>
     </div>
     <a class="back" @click="back_page">
       <svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300" style="enable-background:new 0 0 300 300;" xml:space="preserve">

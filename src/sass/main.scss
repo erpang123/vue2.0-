@@ -236,10 +236,13 @@ a {
   bottom:0.5rem;
   z-index: 110;
   background: #F3F5F7;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overflow-scrolling:touch;
-  -webkit-overflow-scrolling:touch;
+	.detail-info-cube{
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		overflow-scrolling:touch;
+		-webkit-overflow-scrolling:touch;
+	}
 }
 .show-seller{
   position: relative;
