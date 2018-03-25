@@ -17,7 +17,8 @@ module.exports = {
   ],
   //globals
   globals: {
-    axios: true
+    axios: true,
+    qq: true
   },
   // add your custom rules here
   'rules': {

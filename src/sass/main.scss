@@ -11,6 +11,21 @@ $fontSize4: 24px;
 	color: red !important;
 }
 
+%b-1{
+	position: relative;
+	&:after{
+		content: '';
+		position:absolute;
+		left:0;
+		bottom:0;
+		right:0;
+		height: 1px;
+		background: #e6e6e6;
+		transform: scaleY(0.5);
+		transform-origin: 0 0;
+	}
+}
+
 .mask{
 	position: fixed;
 	top: 0;
@@ -1387,6 +1402,56 @@ small{
 		&.star-active{
 		  background:url(../assets/star36_on.png) center no-repeat;
 		  background-size:contain;
+		}
+	}
+}
+/*城市定位*/
+.map-view{
+	.map-title{
+		height: 0.5rem;
+		padding: 0.09rem 0.08rem;
+		background: #dcdcdc;
+		box-sizing:border-box;
+		position:relative;
+		span{
+			margin-right: 0.8rem;
+			margin-left: 0.1rem;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		input[type=text] {
+			width: 100%;
+			border:0;
+			padding-left: 0.6rem;
+			background: #efefef;
+			outline: 0;
+			box-sizing: border-box;
+			height: 100%;
+		}
+	}
+	.map-setting{
+		height: 0.45rem;
+	    line-height: 0.45rem;
+	    background-color: #ffffff;
+	    display: block;
+	    color: #333333;
+	    text-align: center;
+	    font-size: $fontSize2;
+	    @extend %b-1;
+	    span{
+	    	padding-left: 0.2rem;
+	    	background:url(../assets/addr-search.png) left center no-repeat;
+	    	background-size: contain;
+	    }
+	}
+	.map-lists{
+		p{
+			height: 45px;
+			line-height: 45px;
+			font-size: $fontSize1;
+			padding-left: 20px;
+			@extend %b-1;
 		}
 	}
 }

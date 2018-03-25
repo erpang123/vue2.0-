@@ -7,12 +7,17 @@ const Main = () => import('@/components/main' /* webpackChunkName: 'main' */)
 const Seller = () => import('@/components/Seller' /* webpackChunkName: 'seller' */)
 const Message = () => import('@/components/message' /* webpackChunkName: 'message' */)
 const Goods = () => import('@/components/goods' /* webpackChunkName: 'goods' */)
+const MapView = () => import('@/components/map' /* webpackChunkName: 'map' */)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/main/Seller'
+      redirect: '/map'
+    },
+    {
+      path: '/map',
+      component: MapView
     },
     {
       path: '/main',

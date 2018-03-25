@@ -59,3 +59,20 @@ export default {
   }
 }
 </script>
+
+<style>
+.map-view{
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index: 200;
+}
+.map-cube{
+  height: 300px;
+  width: 100%;
+  border: 1px solid #e6e6e6;
+}
+</style>
+
