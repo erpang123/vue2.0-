@@ -15,12 +15,23 @@
 export default {
   data () {
     return {
-      city: '',
+      city: '西溪',
+      searchService: '',
+      myLatlng: '',
       addLists: []
     }
   },
   mounted () {
     this.MapPosition()
+  },
+  watch: {
+    city (newVal, oldVal) {
+      let searchService = this.searchService
+      let myLatlng = this.myLatlng
+      if (newVal.trim() !== '') {
+        searchService.searchNearBy(newVal, myLatlng, 4000)
+      }
+    }
   },
   methods: {
     MapPosition () {
@@ -30,23 +41,26 @@ export default {
         complete: (results) => {
           this.addLists = results.detail.pois
         },
-        error: function () {
-          alert('出错了。')
+        error: () => {
+          this.addLists = []
         }
       })
       let setMap = (mapInfo) => {
         let lat = mapInfo.lat
         let lng = mapInfo.lng
         let myLatlng = new qq.maps.LatLng(lat, lng)
+        this.myLatlng = myLatlng
         searchService.searchNearBy('西溪', myLatlng, 4000)
       }
       let showPosition = (position) => {
+        console.log(position)
         setMap(position)
       }
       let showErr = () => {
         alert('定位失败！')
       }
       geolocation.getLocation(showPosition, showErr, options)
+      this.searchService = searchService
     },
     getInfoList () {
       this.$router.push('/main/Seller')
